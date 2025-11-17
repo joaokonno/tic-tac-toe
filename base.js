@@ -36,6 +36,9 @@ const gameboard = (function(){
 const gameLogic = (function(gameboard){
     // Holds a reference to the current player
     let currentPlayer = player1;
+    let gameActive = true;
+    let winner = null;
+
     // Handle a move at the given board index (0-8)
     function play(index){
         // Only allow the move if the chosen square is empty
@@ -49,6 +52,8 @@ const gameLogic = (function(gameboard){
 
         changeTurn(); // pass turn to next player
         checkWinner(); // check if anyone has won the game
+        
+        return {gameActive, winner};
     }
 
     // Returns true if the square is empty and false otherwise
@@ -90,7 +95,10 @@ const gameLogic = (function(gameboard){
 
     // Sends a message stating which player won the game
     function winGame(player){
+        debugger;
         console.log(`player ${player.name} has won`);
+        gameActive = false;
+        winner = player;
         resetGame();
     }
 
@@ -126,8 +134,24 @@ const gameDisplay = (function(gameboard, gameLogic){
     // Draws the current player's mark on the clicked square
     function squareClick(event){
         event.target.textContent = gameLogic.getCurrentPlayer().symbol
-        gameLogic.play(event.target.id);
-        
+        const {gameActive, winner} = gameLogic.play(event.target.id);
+        if (!gameActive){
+            disableSquares();
+            winnerDisplay(winner);
+        }
+    }
+
+    // Disables mouse clicks on the board squares
+    function disableSquares(){
+        document.querySelectorAll('.square').forEach(square => {
+            square.classList.add('disabled');
+        })
+    }
+
+    function winnerDisplay(winner){
+        const p = document.querySelector('#winner-message');
+        p.textContent = `winner: ${winner.name}`;
+        console.log(winner);
     }
 
     initialise(); // initialise the board

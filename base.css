@@ -9,3 +9,11 @@
     background-color: blue;
     font-size: 10rem;
 }
+
+.disabled{
+    pointer-events: none;
+}
+
+body{
+    color: white;
+}
