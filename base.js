@@ -132,15 +132,17 @@ const gameDisplay = (function(gameboard, gameLogic){
     // Draws the current player's mark on the clicked square
     function squareClick(event){
         const squareId = Number(event.target.id);
-        // Check if the square is already marked
+        // Check if the move is allowed
         if (gameLogic.checkAllowedMove(squareId)){
+            // Write the player's symbol on the square and play the move
             event.target.textContent = gameLogic.getCurrentPlayer().symbol;
-        }
-        const {gameActive, winner} = gameLogic.play(event.target.id);
-        if (!gameActive){
-            disableSquares();
-            winnerDisplay(winner);
-        }
+            const {gameActive, winner} = gameLogic.play(event.target.id);
+            // If the game is over, disable square clicks and display the winner
+            if (!gameActive){
+                disableSquares();
+                winnerDisplay(winner);
+            }
+        }  
     }
 
     // Disables mouse clicks on the board squares
