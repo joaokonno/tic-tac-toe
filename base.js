@@ -12,24 +12,27 @@ const players = [player1, player2];
 const gameboard = (function(){
     // Board state for 9 squares: null = empty, 'x' or 'o' = player moves
     const board = Array(9).fill(null);
-
-    // Current player: -1 = player1, 1 = player2
-    let playerTurn = -1; 
+    let currentPlayer = player1
 
     // Handle a move at the given board index (0-8)
     function play(index){
         // Only allow the move if the chosen square is empty
-        checkAllowedMove(index);
-        // TODO: implement behaviour based on the value returned by checkAllowedMove
+        if (checkAllowedMove(index)){
+            // Populate the square with the player's symbol
+            board[index] = currentPlayer.symbol;
+        } else {
+            console.log(`This square is already taken. Player ${currentPlayer.name}, please play again`);
+        }
+    
     }
 
-    // Returns true if the move is valid and false otherwise
+    // Returns true if the square is empty and false otherwise
     function checkAllowedMove(index){
-        // TODO: implement validation logic
+        if (board[index] === null) return true;
+        return false;
     }
 
     // TODO: add checkWinner(), win(player), and reset() methods
-
     // Expose the public methods
-    return {play,};
+    return {play};
 })();
