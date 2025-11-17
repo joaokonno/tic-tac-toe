@@ -82,19 +82,19 @@ const gameLogic = (function(gameboard){
             for (combination of winningCombinations){
                 // Player has won if the winning combination is contained inside markedSquares
                 const victory = combination.every(element => markedSquares.includes(element));
-                if (victory) win(player);
+                if (victory) winGame(player);
             }
         }
     }
 
     // Sends a message stating which player won the game
-    function win(player){
+    function winGame(player){
         console.log(`player ${player.name} has won`);
-        reset();
+        resetGame();
     }
 
     // Resets the game
-    function reset(){
+    function resetGame(){
         gameboard.boardReset();
         currentPlayer = player1;
     }
