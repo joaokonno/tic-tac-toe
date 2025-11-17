@@ -34,7 +34,6 @@ const gameboard = (function(){
 
 // Module (IIFE) that encapsulates the game logic
 const gameLogic = (function(gameboard){
-    // Holds a reference to the current player
     let currentPlayer = player1;
     let gameActive = true;
     let winner = null;
@@ -114,7 +113,7 @@ const gameLogic = (function(gameboard){
     }
 
     // Return public methods
-    return {play, getCurrentPlayer};
+    return {play, getCurrentPlayer, checkAllowedMove};
 
 })(gameboard);
 
@@ -133,7 +132,11 @@ const gameDisplay = (function(gameboard, gameLogic){
 
     // Draws the current player's mark on the clicked square
     function squareClick(event){
-        event.target.textContent = gameLogic.getCurrentPlayer().symbol
+        const squareId = Number(event.target.id);
+        // Check if the square is already marked
+        if (gameLogic.checkAllowedMove(squareId)){
+            event.target.textContent = gameLogic.getCurrentPlayer().symbol;
+        }
         const {gameActive, winner} = gameLogic.play(event.target.id);
         if (!gameActive){
             disableSquares();
