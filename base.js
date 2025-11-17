@@ -20,11 +20,15 @@ const gameboard = (function(){
         if (checkAllowedMove(index)){
             // Populate the square with the player's symbol
             board[index] = currentPlayer.symbol;
+            console.log(board); // for testing
         } else {
             console.log(`This square is already taken. Player ${currentPlayer.name}, please play again`);
         }
-    
+
+        changeTurn(); // pass turn to next player
+        checkWinner(); // check if anyone has won the game
     }
+
 
     // Returns true if the square is empty and false otherwise
     function checkAllowedMove(index){
@@ -32,7 +36,48 @@ const gameboard = (function(){
         return false;
     }
 
-    // TODO: add checkWinner(), win(player), and reset() methods
+    // Change's the player turn
+    function changeTurn(){
+        if (currentPlayer === player1) currentPlayer = player2;
+        else currentPlayer = player1;
+    }
+
+    // Checks if any of the players has marked a complete row, column or diagonal
+    function checkWinner(){
+        // Array containing all possible winning combinations
+        const winningCombinations = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],    // winning rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],     // winning columns
+            [0, 4, 8], [2, 4, 6]                 // winning diagonals
+        ]
+
+        // Check each player's marks to see if they match any combination
+        for (let player of players){
+            const markedSquares = [];
+            for (let i = 0; i <= 8; i++){
+                // Get the indexes marked by the player
+                if (board[i] === player.symbol) markedSquares.push(i);
+            }
+            // Loop through each winning combination
+            for (combination of winningCombinations){
+                // Player has won if the winning combination is contained inside markedSquares
+                const victory = combination.every(element => markedSquares.includes(element));
+                if (victory) win(player);
+            }
+        }
+    }
+
+    // Sends a message stating which player won the game
+    function win(player){
+        console.log(`player ${player.name} has won`);
+        reset();
+    }
+
+    // Resets the game
+    function reset(){
+
+    }
+
     // Expose the public methods
-    return {play};
+    return {play, board};
 })();
