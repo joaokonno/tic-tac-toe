@@ -97,13 +97,13 @@ const gameLogic = (function(gameboard){
         console.log(`player ${player.name} has won`);
         gameActive = false;
         winner = player;
-        resetGame();
     }
 
     // Resets the game
     function resetGame(){
         gameboard.boardReset();
         currentPlayer = player1;
+        gameActive = true;
     }
 
     // Returns the current player
@@ -112,12 +112,17 @@ const gameLogic = (function(gameboard){
     }
 
     // Return public methods
-    return {play, getCurrentPlayer, checkAllowedMove};
+    return {play, getCurrentPlayer, checkAllowedMove, resetGame};
 
 })(gameboard);
 
 const gameDisplay = (function(gameboard, gameLogic){
-    // Initialise the grid squares and attach them to the container
+
+    resetButton = document.querySelector('#play-btn');
+    resetButton.addEventListener('click', resetButtonClick);
+    const p = document.querySelector('#winner-message');
+
+    // Initialise the grid squares and attach event listeners to monitor for clicks
     function initialise(){
         const container = document.querySelector('#game-container');
         for (let i = 0; i <= 8; i++){
@@ -141,7 +146,8 @@ const gameDisplay = (function(gameboard, gameLogic){
             if (!gameActive){
                 disableSquares();
                 winnerDisplay(winner);
-            }
+                resetButton.classList.remove('disabled');
+            } else resetButton.classList.add('disabled');
         }  
     }
 
@@ -152,11 +158,22 @@ const gameDisplay = (function(gameboard, gameLogic){
         })
     }
 
+    // Display winner message
     function winnerDisplay(winner){
-        const p = document.querySelector('#winner-message');
         p.textContent = `winner: ${winner.name}`;
         console.log(winner);
     }
 
+    // Resets logic, re-enables squares, resets winner message
+    function resetButtonClick(){
+        gameLogic.resetGame();
+        document.querySelectorAll('.square').forEach(square => {
+            square.classList.toggle('disabled');
+            square.textContent = '';
+        });
+        p.textContent = '';
+    }
+
     initialise(); // initialise the board
+
 })(gameboard, gameLogic);
