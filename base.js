@@ -12,15 +12,36 @@ const players = [player1, player2];
 const gameboard = (function(){
     // Board state for 9 squares: null = empty, 'x' or 'o' = player moves
     const board = Array(9).fill(null);
-    let currentPlayer = player1
 
+    // Returns a copy of the board so we can access without modifying it
+    function getBoard(){
+        return [...board];
+    }
+
+    // Sets the given marker on the board
+    function setMarker(index, marker){
+        board[index] = marker;
+    }
+
+    // Resets the board
+    function boardReset(){
+        board.fill(null);
+    }
+
+    // Expose the public methods
+    return {getBoard, setMarker, boardReset};
+})();
+
+const gameLogic = (function(gameboard){
+    // Holds a reference to the current player
+    let currentPlayer = player1;
     // Handle a move at the given board index (0-8)
     function play(index){
         // Only allow the move if the chosen square is empty
         if (checkAllowedMove(index)){
             // Populate the square with the player's symbol
-            board[index] = currentPlayer.symbol;
-            console.log(board); // for testing
+            gameboard.setMarker(index, currentPlayer.symbol);
+            console.log(gameboard.getBoard()); // for testing
         } else {
             console.log(`This square is already taken. Player ${currentPlayer.name}, please play again`);
         }
@@ -29,10 +50,9 @@ const gameboard = (function(){
         checkWinner(); // check if anyone has won the game
     }
 
-
     // Returns true if the square is empty and false otherwise
     function checkAllowedMove(index){
-        if (board[index] === null) return true;
+        if (gameboard.getBoard()[index] === null) return true;
         return false;
     }
 
@@ -56,7 +76,7 @@ const gameboard = (function(){
             const markedSquares = [];
             for (let i = 0; i <= 8; i++){
                 // Get the indexes marked by the player
-                if (board[i] === player.symbol) markedSquares.push(i);
+                if (gameboard.getBoard()[i] === player.symbol) markedSquares.push(i);
             }
             // Loop through each winning combination
             for (combination of winningCombinations){
@@ -75,19 +95,11 @@ const gameboard = (function(){
 
     // Resets the game
     function reset(){
-        board.fill(null);
+        gameboard.boardReset();
         currentPlayer = player1;
     }
 
-    // Returns a copy of the board so we can access without modifying it
-    function getBoard(){
-        return [...board];
-    }
+    // Return public methods
+    return {play};
 
-    // Expose the public methods
-    return {play, getBoard, board};
-})();
-
-const gameLogic = (function(gameboard){
-    
 })(gameboard);
