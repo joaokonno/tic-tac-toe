@@ -1,0 +1,10 @@
+#game-container{
+    display: grid;
+    gap: 10px;
+    grid-template-rows: repeat(3, 200px);
+    grid-template-columns: repeat(3, 200px);
+}
+
+.square{
+    background-color: blue;
+}

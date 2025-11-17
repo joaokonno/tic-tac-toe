@@ -104,3 +104,18 @@ const gameLogic = (function(gameboard){
     return {play};
 
 })(gameboard);
+
+const gameDisplay = (function(gameboard, gameLogic){
+    // Initialise the grid squares and attach them to the container
+    function initialise(){
+        const container = document.querySelector('#game-container');
+        for (let i = 0; i <= 8; i++){
+            const square = document.createElement('div');
+            square.classList.add('square');
+            square.id = i;
+            container.appendChild(square);
+        }
+    }
+
+    initialise(); // initialise the board
+})();
