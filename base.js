@@ -45,20 +45,20 @@ const gameLogic = (function(gameboard){
             // Populate the square with the player's symbol
             gameboard.setMarker(index, currentPlayer.symbol);
             console.log(gameboard.getBoard()); // for testing
-        } else {
-            console.log(`This square is already taken. Player ${currentPlayer.name}, please play again`);
+            changeTurn(); // pass turn to next player
+            checkWinner(); // check if anyone has won the game
         }
 
-        changeTurn(); // pass turn to next player
-        checkWinner(); // check if anyone has won the game
-        
         return {gameActive, winner};
     }
 
     // Returns true if the square is empty and false otherwise
     function checkAllowedMove(index){
         if (gameboard.getBoard()[index] === null) return true;
-        return false;
+        else{
+            console.log(`this square is already taken. ${currentPlayer.name}, please try again`);
+            return false;
+        }
     }
 
     // Change's the player turn
@@ -94,7 +94,6 @@ const gameLogic = (function(gameboard){
 
     // Sends a message stating which player won the game
     function winGame(player){
-        debugger;
         console.log(`player ${player.name} has won`);
         gameActive = false;
         winner = player;
