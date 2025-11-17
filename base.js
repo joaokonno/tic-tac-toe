@@ -111,8 +111,12 @@ const gameLogic = (function(gameboard){
         return currentPlayer;
     }
 
+    function getGameStatus(){
+        return gameActive;
+    }
+
     // Return public methods
-    return {play, getCurrentPlayer, checkAllowedMove, resetGame};
+    return {play, getCurrentPlayer, checkAllowedMove, resetGame, getGameStatus};
 
 })(gameboard);
 
@@ -166,12 +170,15 @@ const gameDisplay = (function(gameboard, gameLogic){
 
     // Resets logic, re-enables squares, resets winner message
     function resetButtonClick(){
-        gameLogic.resetGame();
-        document.querySelectorAll('.square').forEach(square => {
-            square.classList.toggle('disabled');
-            square.textContent = '';
-        });
-        p.textContent = '';
+        // Only reset things if game is over
+        if (!gameLogic.getGameStatus()){
+            gameLogic.resetGame();
+            p.textContent = '';
+            document.querySelectorAll('.square').forEach(square => {
+                square.classList.toggle('disabled');
+                square.textContent = '';
+            });
+        }
     }
 
     initialise(); // initialise the board
