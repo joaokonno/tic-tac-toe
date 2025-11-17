@@ -75,9 +75,19 @@ const gameboard = (function(){
 
     // Resets the game
     function reset(){
+        board.fill(null);
+        currentPlayer = player1;
+    }
 
+    // Returns a copy of the board so we can access without modifying it
+    function getBoard(){
+        return [...board];
     }
 
     // Expose the public methods
-    return {play, board};
+    return {play, getBoard, board};
 })();
+
+const gameLogic = (function(gameboard){
+    
+})(gameboard);
