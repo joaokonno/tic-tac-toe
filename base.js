@@ -8,7 +8,7 @@ const player1 = createPlayer('alice', 'x');
 const player2 = createPlayer('bob', 'o');
 const players = [player1, player2];
 
-// Module (IIFE) that encapsulates the tic-tac-toe board and game logic
+// Module (IIFE) that encapsulates the tic-tac-toe board
 const gameboard = (function(){
     // Board state for 9 squares: null = empty, 'x' or 'o' = player moves
     const board = Array(9).fill(null);
@@ -32,6 +32,7 @@ const gameboard = (function(){
     return {getBoard, setMarker, boardReset};
 })();
 
+// Module (IIFE) that encapsulates the game logic
 const gameLogic = (function(gameboard){
     // Holds a reference to the current player
     let currentPlayer = player1;
