@@ -100,8 +100,13 @@ const gameLogic = (function(gameboard){
         currentPlayer = player1;
     }
 
+    // Returns the current player
+    function getCurrentPlayer(){
+        return currentPlayer;
+    }
+
     // Return public methods
-    return {play};
+    return {play, getCurrentPlayer};
 
 })(gameboard);
 
@@ -114,8 +119,16 @@ const gameDisplay = (function(gameboard, gameLogic){
             square.classList.add('square');
             square.id = i;
             container.appendChild(square);
+            square.addEventListener('click', squareClick);
         }
     }
 
+    // Draws the current player's mark on the clicked square
+    function squareClick(event){
+        event.target.textContent = gameLogic.getCurrentPlayer().symbol
+        gameLogic.play(event.target.id);
+        
+    }
+
     initialise(); // initialise the board
-})();
+})(gameboard, gameLogic);
