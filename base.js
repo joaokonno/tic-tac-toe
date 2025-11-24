@@ -7,6 +7,8 @@ function createPlayer(name, symbol){
 const player1 = createPlayer('alice', 'x');
 const player2 = createPlayer('bob', 'o');
 const players = [player1, player2];
+const input1 = document.getElementById('player1');
+const input2 = document.getElementById('player2');
 
 // Module (IIFE) that encapsulates the tic-tac-toe board
 const gameboard = (function(){
@@ -35,7 +37,7 @@ const gameboard = (function(){
 // Module (IIFE) that encapsulates the game logic
 const gameLogic = (function(gameboard){
     let currentPlayer = player1;
-    let gameActive = true;
+    let gameActive = false;
     let winner = null;
 
     // Handle a move at the given board index (0-8)
@@ -131,8 +133,11 @@ const gameDisplay = (function(gameboard, gameLogic){
         const container = document.querySelector('#game-container');
         for (let i = 0; i <= 8; i++){
             const square = document.createElement('div');
-            square.classList.add('square');
+            // Make the squares disabled at the beginning
+            square.classList.add('square', 'disabled');
+            // Number each square
             square.id = i;
+
             container.appendChild(square);
             square.addEventListener('click', squareClick);
         }
@@ -146,21 +151,25 @@ const gameDisplay = (function(gameboard, gameLogic){
             // Write the player's symbol on the square and play the move
             event.target.textContent = gameLogic.getCurrentPlayer().symbol;
             const {gameActive, winner} = gameLogic.play(event.target.id);
-            // If the game is over, disable square clicks and display the winner
+            // If the game is over, disable square clicks, enable inputs and play button,
+            // and display the winner
             if (!gameActive){
-                disableSquares();
+                toggleBoard();
                 winnerDisplay(winner);
-                resetButton.classList.remove('disabled');
             } else resetButton.classList.add('disabled');
         }  
     }
 
     // Disables mouse clicks on the board squares
-    function disableSquares(emptySquares=false){
+    function toggleBoard(emptySquares=false){
         document.querySelectorAll('.square').forEach(square => {
             square.classList.toggle('disabled');
             if (emptySquares) square.textContent = '';
         })
+        input1.classList.toggle('disabled');
+        input2.classList.toggle('disabled');
+        resetButton.classList.toggle('disabled');
+
     }
 
     // Display winner message
@@ -175,6 +184,7 @@ const gameDisplay = (function(gameboard, gameLogic){
         if (!gameLogic.getGameStatus()){
             gameLogic.resetGame();
             resetDisplay();
+            getPlayerInput();
         }
     }
 
@@ -182,9 +192,16 @@ const gameDisplay = (function(gameboard, gameLogic){
         // Reset the winner text
         p.textContent = '';
         // Disable squares and remove their marks
-        disableSquares(true);
+        toggleBoard(true);
     }
 
-    initialise(); // initialise the board
+    // Sets the player name according to the input values
+    function getPlayerInput(){
+        player1.name = input1.value;
+        player2.name = input2.value;
+    }
+
+    // Initialise the board
+    initialise();
 
 })(gameboard, gameLogic);
