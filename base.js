@@ -156,9 +156,10 @@ const gameDisplay = (function(gameboard, gameLogic){
     }
 
     // Disables mouse clicks on the board squares
-    function disableSquares(){
+    function disableSquares(emptySquares=false){
         document.querySelectorAll('.square').forEach(square => {
-            square.classList.add('disabled');
+            square.classList.toggle('disabled');
+            if (emptySquares) square.textContent = '';
         })
     }
 
@@ -173,12 +174,15 @@ const gameDisplay = (function(gameboard, gameLogic){
         // Only reset things if game is over
         if (!gameLogic.getGameStatus()){
             gameLogic.resetGame();
-            p.textContent = '';
-            document.querySelectorAll('.square').forEach(square => {
-                square.classList.toggle('disabled');
-                square.textContent = '';
-            });
+            resetDisplay();
         }
+    }
+
+    function resetDisplay(){
+        // Reset the winner text
+        p.textContent = '';
+        // Disable squares and remove their marks
+        disableSquares(true);
     }
 
     initialise(); // initialise the board
