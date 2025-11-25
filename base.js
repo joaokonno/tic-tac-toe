@@ -139,6 +139,7 @@ const gameDisplay = (function(gameboard, gameLogic){
     resetButton = document.querySelector('#play-btn');
     resetButton.addEventListener('click', resetButtonClick);
     const p = document.querySelector('#winner-message');
+    p.classList.add('hidden');
 
     // Get references to player input
     const input1 = document.getElementById('player1');
@@ -195,8 +196,10 @@ const gameDisplay = (function(gameboard, gameLogic){
     // Display winner message
     function winnerDisplay(winner){
         // If winner is null, show a draw message
-        if (winner !== null) p.textContent = `winner: ${winner.name}`;
-        else p.textContent = 'draw';
+        if (winner !== null){
+            p.textContent = `winner: ${winner.name}`
+            p.classList.add('show');
+        } else p.textContent = 'draw';
     }
 
     // Resets logic, re-enables squares, resets winner message, set player names
@@ -212,7 +215,7 @@ const gameDisplay = (function(gameboard, gameLogic){
 
     function resetDisplay(){
         // Reset the winner text
-        p.textContent = '';
+        p.classList.remove('show');
         // Disable squares and remove their marks
         toggleBoard(true);
     }
