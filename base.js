@@ -132,6 +132,9 @@ const gameDisplay = (function(gameboard, gameLogic){
 
     gameLogic.setPlayers(player1, player2);
 
+    // Reference to the easter egg for Bella
+    const easterEgg = document.getElementById('easter-egg');
+
     // Get references for the play button and the winner paragraph
     resetButton = document.querySelector('#play-btn');
     resetButton.addEventListener('click', resetButtonClick);
@@ -169,6 +172,7 @@ const gameDisplay = (function(gameboard, gameLogic){
             if (!gameActive){
                 toggleBoard();
                 winnerDisplay(winner);
+                easterEgg.classList.remove('show');
             } else resetButton.classList.add('disabled'); // else keep play button disabled
         }  
     }
@@ -202,6 +206,7 @@ const gameDisplay = (function(gameboard, gameLogic){
             gameLogic.resetGame();
             resetDisplay();
             getPlayerInput();
+            bellaMessage();
         }
     }
 
@@ -218,6 +223,19 @@ const gameDisplay = (function(gameboard, gameLogic){
         player2.name = input2.value;
     }
 
+    function bellaMessage(){
+        // Get the input names
+        const name1 = input1.value.trim().toLowerCase();
+        const name2= input2.value.trim().toLowerCase();
+        // Check if they match 'joao' and 'bella'
+        const nameMatch = 
+            (name1 === 'joao' && name2 === 'bella') ||
+            (name1 === 'joão' && name2 === 'bella') ||
+            (name1 === 'bella' && name2 === 'joao') ||
+            (name1 === 'bella' && name2 === 'joão')
+        // If match, show easter egg
+        if (nameMatch) easterEgg.classList.add('show');
+    }
     // Initialise the board
     initialise();
 

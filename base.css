@@ -69,3 +69,20 @@ input[type='text']{
     outline: none;
     font-size: 1rem;
 }
+
+.hidden{
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.show{
+    opacity: 1;
+}
+
+#easter-egg{
+    margin-bottom: 0px;
+}
+
+span{
+    font-size: 1.25rem;
+}
