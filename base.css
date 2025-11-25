@@ -1,8 +1,8 @@
 #game-container{
     display: grid;
     gap: 10px;
-    grid-template-rows: repeat(3, 200px);
-    grid-template-columns: repeat(3, 200px);
+    grid-template-rows: repeat(3, min(200px, 30vw));
+    grid-template-columns: repeat(3, min(200px, 30vw));
     margin-top: 20px;
     margin-bottom: 20px;
 }
@@ -16,6 +16,12 @@
     justify-content: center;
     border-radius: 5px;
     transition: opacity 0.5s ease
+}
+
+@media (max-width: 666px) {
+    .square {
+        font-size: 24vw;  /* scales down together with the square */
+    }
 }
 
 .disabled{
@@ -38,6 +44,7 @@ body{
     padding: 10px 30px;
     font-size: 2.5rem;
     border-radius: 15px;
+    min-width: 150px;
 }
 
 #play-btn:hover, .square:hover{
