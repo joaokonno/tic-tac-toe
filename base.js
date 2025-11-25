@@ -3,11 +3,6 @@ function createPlayer(name, symbol){
     return {name, symbol};
 }
 
-// Create the two players and keep them in an array for easy access by index
-const player1 = createPlayer('alice', 'x');
-const player2 = createPlayer('bob', 'o');
-const players = [player1, player2];
-
 // Module (IIFE) that encapsulates the tic-tac-toe board
 const gameboard = (function(){
     // Board state for 9 squares: null = empty, 'x' or 'o' = player moves
@@ -34,9 +29,11 @@ const gameboard = (function(){
 
 // Module (IIFE) that encapsulates the game logic
 const gameLogic = (function(gameboard){
-    let currentPlayer = player1;
     let gameActive = false;
     let winner = null;
+    let player1;
+    let player2;
+    let players;
 
     // Handle a move at the given board index (0-8)
     function play(index){
@@ -50,6 +47,13 @@ const gameLogic = (function(gameboard){
         }
 
         return {gameActive, winner};
+    }
+
+    function setPlayers(p1, p2){
+        player1 = p1;
+        player2 = p2;
+        players = [player1, player2];
+        currentPlayer = player1;
     }
 
     // Returns true if the square is empty and false otherwise
@@ -117,11 +121,17 @@ const gameLogic = (function(gameboard){
     }
 
     // Return public methods
-    return {play, getCurrentPlayer, checkAllowedMove, resetGame, getGameStatus};
+    return {play, getCurrentPlayer, checkAllowedMove, resetGame, getGameStatus, setPlayers};
 
 })(gameboard);
 
 const gameDisplay = (function(gameboard, gameLogic){
+    // Create the two players and keep them in an array for easy access by index
+    const player1 = createPlayer('alice', 'x');
+    const player2 = createPlayer('bob', 'o');
+
+    gameLogic.setPlayers(player1, player2);
+
     // Get references for the play button and the winner paragraph
     resetButton = document.querySelector('#play-btn');
     resetButton.addEventListener('click', resetButtonClick);
