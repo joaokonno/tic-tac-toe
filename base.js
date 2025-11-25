@@ -89,14 +89,14 @@ const gameLogic = (function(gameboard){
             for (combination of winningCombinations){
                 // Player has won if the winning combination is contained inside markedSquares
                 const victory = combination.every(element => markedSquares.includes(element));
-                if (victory) winGame(player);
+                if (victory) endGame(player);
+                else if (!victory && !gameboard.getBoard().includes(null)) endGame();
             }
         }
     }
 
     // Sends a message stating which player won the game
-    function winGame(player){
-        console.log(`player ${player.name} has won`);
+    function endGame(player=null){
         gameActive = false;
         winner = player;
     }
@@ -174,8 +174,9 @@ const gameDisplay = (function(gameboard, gameLogic){
 
     // Display winner message
     function winnerDisplay(winner){
-        p.textContent = `winner: ${winner.name}`;
-        console.log(winner);
+        // If winner is null, show a draw message
+        if (winner !== null) p.textContent = `winner: ${winner.name}`;
+        else p.textContent = 'draw';
     }
 
     // Resets logic, re-enables squares, resets winner message
