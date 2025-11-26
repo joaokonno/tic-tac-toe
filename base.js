@@ -135,6 +135,10 @@ const gameDisplay = (function(gameboard, gameLogic){
     // Reference to the easter egg for Bella
     const easterEgg = document.getElementById('easter-egg');
 
+    // Span for the winner's name
+    const winnerSpan = document.createElement('span');
+    winnerSpan.id = 'winner-name';
+
     // Text for Bella
     const bellaText = 'kkkkkkkkkkkkkkkkkkkkkkk se vc quiser jogar comigo eh so falar';
     // Text for input required
@@ -210,20 +214,23 @@ const gameDisplay = (function(gameboard, gameLogic){
         // If winner is null, show a draw message
         if (winner !== null){
             // Construct the winner message
-            p.textContent = 'vencedor: ';
-            p.classList.add('show');
-            const span = document.createElement('span');
-            span.id = 'winner-name';
-            span.textContent = winner.name
-            p.appendChild(span);
+            buildWinnerMessage(winner);
 
             // Make the winner's name purple if it's Bella's
-            if (winner.name.trim().toLowerCase() === 'bella') span.style.color = '#CBA5FF';
-            else span.style.color = 'white';
+            if (winner.name.trim().toLowerCase() === 'bella') winnerSpan.style.color = '#CBA5FF';
+            else winnerSpan.style.color = 'white';
         } else{
             p.textContent = 'empate';
             p.classList.add('show');
         }
+    }
+
+    // Build the message for the winner
+    function buildWinnerMessage(winner){
+        p.textContent = 'vencedor: ';
+        p.classList.add('show');
+        winnerSpan.textContent = winner.name
+        p.appendChild(winnerSpan);
     }
 
     // Resets logic, re-enables squares, resets winner message, set player names
@@ -234,11 +241,15 @@ const gameDisplay = (function(gameboard, gameLogic){
             easterEgg.classList.add('show');
         } // Else only reset the game if its over
         else if (!gameLogic.getGameStatus()){
-            gameLogic.resetGame();
-            resetDisplay();
-            getPlayerInput();
-            messageOnPlay();
+            resetGame();
         }
+    }
+
+    function resetGame(){
+        gameLogic.resetGame();
+        resetDisplay();
+        getPlayerInput();
+        messageOnPlay();
     }
 
     function resetDisplay(){
