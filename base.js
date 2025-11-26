@@ -36,9 +36,9 @@ const gameLogic = (function(gameboard){
     let players;
 
     // Handle a move at the given board index (0-8)
-    function play(index){
+    function play(index, overwrite=false){
         // Only allow the move if the chosen square is empty
-        if (checkAllowedMove(index)){
+        if (checkAllowedMove(index) || overwrite){
             // Populate the square with the player's symbol
             gameboard.setMarker(index, currentPlayer.symbol);
             console.log(gameboard.getBoard()); // for testing
@@ -164,14 +164,19 @@ const gameDisplay = (function(gameboard, gameLogic){
             // Append squares to the container and attach event listeners
             container.appendChild(square);
             square.addEventListener('click', squareClick);
+            square.addEventListener('dblclick', (event) => squareClick(event, true));
         }
     }
 
     // Draws the current player's mark on the clicked square
-    function squareClick(event){
+    function squareClick(event, doubleClick=false){
         const squareId = Number(event.target.id);
+        // Act on double clicks, replacing the player's mark
+        if (doubleClick){
+            gameLogic.play(event.target.id, true);
+            event.target.textContent = gameLogic.getCurrentPlayer().symbol;
         // Check if the move is allowed
-        if (gameLogic.checkAllowedMove(squareId)){
+        } else if (gameLogic.checkAllowedMove(squareId)){
             // Write the player's symbol on the square and play the move
             event.target.textContent = gameLogic.getCurrentPlayer().symbol;
             const {gameActive, winner} = gameLogic.play(event.target.id);
