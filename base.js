@@ -135,6 +135,13 @@ const gameDisplay = (function(gameboard, gameLogic){
     // Reference to the easter egg for Bella
     const easterEgg = document.getElementById('easter-egg');
 
+    // Text for Bella
+    const bellaText = 'kkkkkkkkkkkkkkkkkkkkkkk se vc quiser jogar comigo eh so falar';
+    // Text for input required
+    const requireInputText = 'enter a name';
+    // Track whether the message for Bella has been shown
+    let isBellaMessageShown = false;
+
     // Get references for the play button and the winner paragraph
     resetButton = document.querySelector('#play-btn');
     resetButton.addEventListener('click', resetButtonClick);
@@ -209,17 +216,14 @@ const gameDisplay = (function(gameboard, gameLogic){
     function resetButtonClick(){
         // If any of the inputs is blank, show a warning message
         if (input1.value === '' || input2.value === ''){
-            easterEgg.textContent = 'enter a name';
+            easterEgg.textContent = requireInputText;
             easterEgg.classList.add('show');
         } // Else only reset the game if its over
         else if (!gameLogic.getGameStatus()){
             gameLogic.resetGame();
             resetDisplay();
             getPlayerInput();
-            bellaMessage();
-            if (easterEgg.textContent === 'enter a name'){
-                easterEgg.classList.remove('show');
-            }    
+            messageOnPlay();
         }
     }
 
@@ -237,7 +241,8 @@ const gameDisplay = (function(gameboard, gameLogic){
     }
 
     function messageOnPlay(){
-        
+        bellaMessage();
+        if (easterEgg.textContent === requireInputText) easterEgg.classList.remove('show');
     }
 
     function bellaMessage(){
@@ -251,9 +256,10 @@ const gameDisplay = (function(gameboard, gameLogic){
             (name1 === 'bella' && name2 === 'joao') ||
             (name1 === 'bella' && name2 === 'joão')
         // If match, show easter egg
-        if (nameMatch){
-            easterEgg.textContent = 'kkkkkkkkkkkkkkkkkkkkkkk se vc quiser jogar comigo eh so falar';
+        if (nameMatch && !isBellaMessageShown){
+            easterEgg.textContent = bellaText;
             easterEgg.classList.add('show');
+            isBellaMessageShown = true;
         }
     }
     // Initialise the board
