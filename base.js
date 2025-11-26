@@ -209,8 +209,17 @@ const gameDisplay = (function(gameboard, gameLogic){
     function winnerDisplay(winner){
         // If winner is null, show a draw message
         if (winner !== null){
-            p.textContent = `vencedor: ${winner.name}`
+            // Construct the winner message
+            p.textContent = 'vencedor: ';
             p.classList.add('show');
+            const span = document.createElement('span');
+            span.id = 'winner-name';
+            span.textContent = winner.name
+            p.appendChild(span);
+
+            // Make the winner's name purple if it's Bella's
+            if (winner.name.trim().toLowerCase() === 'bella') span.style.color = '#CBA5FF';
+            else span.style.color = 'white';
         } else{
             p.textContent = 'empate';
             p.classList.add('show');
