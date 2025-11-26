@@ -138,7 +138,7 @@ const gameDisplay = (function(gameboard, gameLogic){
     // Text for Bella
     const bellaText = 'kkkkkkkkkkkkkkkkkkkkkkk se vc quiser jogar comigo eh so falar';
     // Text for input required
-    const requireInputText = 'enter a name';
+    const requireInputText = 'tem q bota nome';
     // Track whether the message for Bella has been shown
     let isBellaMessageShown = false;
 
@@ -204,10 +204,10 @@ const gameDisplay = (function(gameboard, gameLogic){
     function winnerDisplay(winner){
         // If winner is null, show a draw message
         if (winner !== null){
-            p.textContent = `winner: ${winner.name}`
+            p.textContent = `vencedor: ${winner.name}`
             p.classList.add('show');
         } else{
-            p.textContent = 'draw';
+            p.textContent = 'empate';
             p.classList.add('show');
         }
     }
