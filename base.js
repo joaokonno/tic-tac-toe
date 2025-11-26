@@ -199,17 +199,27 @@ const gameDisplay = (function(gameboard, gameLogic){
         if (winner !== null){
             p.textContent = `winner: ${winner.name}`
             p.classList.add('show');
-        } else p.textContent = 'draw';
+        } else{
+            p.textContent = 'draw';
+            p.classList.add('show');
+        }
     }
 
     // Resets logic, re-enables squares, resets winner message, set player names
     function resetButtonClick(){
-        // Only reset things if game is over
-        if (!gameLogic.getGameStatus()){
+        // If any of the inputs is blank, show a warning message
+        if (input1.value === '' || input2.value === ''){
+            easterEgg.textContent = 'enter a name';
+            easterEgg.classList.add('show');
+        } // Else only reset the game if its over
+        else if (!gameLogic.getGameStatus()){
             gameLogic.resetGame();
             resetDisplay();
             getPlayerInput();
             bellaMessage();
+            if (easterEgg.textContent === 'enter a name'){
+                easterEgg.classList.remove('show');
+            }    
         }
     }
 
@@ -226,6 +236,10 @@ const gameDisplay = (function(gameboard, gameLogic){
         player2.name = input2.value;
     }
 
+    function messageOnPlay(){
+        
+    }
+
     function bellaMessage(){
         // Get the input names
         const name1 = input1.value.trim().toLowerCase();
@@ -237,7 +251,10 @@ const gameDisplay = (function(gameboard, gameLogic){
             (name1 === 'bella' && name2 === 'joao') ||
             (name1 === 'bella' && name2 === 'joão')
         // If match, show easter egg
-        if (nameMatch) easterEgg.classList.add('show');
+        if (nameMatch){
+            easterEgg.textContent = 'kkkkkkkkkkkkkkkkkkkkkkk se vc quiser jogar comigo eh so falar';
+            easterEgg.classList.add('show');
+        }
     }
     // Initialise the board
     initialise();
