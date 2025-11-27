@@ -93,9 +93,10 @@ const gameLogic = (function(gameboard){
                 // Player has won if the winning combination is contained inside markedSquares
                 const victory = combination.every(element => markedSquares.includes(element));
                 if (victory) endGame(player);
-                else if (!victory && !gameboard.getBoard().includes(null)) endGame();
+                // else if (!victory && !gameboard.getBoard().includes(null)) endGame();
             }
         }
+        if (!gameboard.getBoard().includes(null) && gameActive === true) endGame(); 
     }
 
     // Set the game state to false and set the winner
@@ -176,21 +177,21 @@ const gameDisplay = (function(gameboard, gameLogic){
     // Draws the current player's mark on the clicked square
     function squareClick(event){
         const squareId = Number(event.target.id);
-        clickCount++;
+        // clickCount++;
 
-        // Reset clicks if takes too long
-        if (clickCount === 1){
-            clickTimer = setTimeout(() => {
-                clickCount = 0;
-            }, 150);
-        }
+        // // Reset clicks if takes too long
+        // if (clickCount === 1){
+        //     clickTimer = setTimeout(() => {
+        //         clickCount = 0;
+        //     }, 150);
+        // }
 
-        // Detect triple clicks for activating bug
-        if (clickCount === 2){
-            gameLogic.play(event.target.id, true);
-            event.target.textContent = gameLogic.getCurrentPlayer().symbol;
-            clickCount = 0; // reset counter
-        }
+        // // Detect triple clicks for activating bug
+        // if (clickCount === 2){
+        //     gameLogic.play(event.target.id, true);
+        //     event.target.textContent = gameLogic.getCurrentPlayer().symbol;
+        //     clickCount = 0; // reset counter
+        // }
             
         // Check if the move is allowed
         if (gameLogic.checkAllowedMove(squareId)){
