@@ -237,12 +237,21 @@ const gameDisplay = (function(gameboard, gameLogic){
     function resetButtonClick(){
         // If any of the inputs is blank, show a warning message
         if (input1.value === '' || input2.value === ''){
-            easterEgg.textContent = requireInputText;
-            easterEgg.classList.add('show');
+            displayWarningMessage();
         } // Else only reset the game if its over
         else if (!gameLogic.getGameStatus()){
             resetGame();
         }
+    }
+
+    function displayWarningMessage(){
+        easterEgg.textContent = requireInputText;
+        easterEgg.classList.add('show');
+        easterEgg.classList.remove('fade-slow');
+
+        setTimeout(() => {
+            easterEgg.classList.remove('show');
+        }, 1000)
     }
 
     function resetGame(){
@@ -282,11 +291,17 @@ const gameDisplay = (function(gameboard, gameLogic){
             (name1 === 'bella' && name2 === 'joão')
         // If match, show easter egg
         if (nameMatch && !isBellaMessageShown){
-            easterEgg.textContent = bellaText;
-            easterEgg.classList.add('show');
-            isBellaMessageShown = true;
+            displayBellaMessage();
         }
     }
+
+    function displayBellaMessage(){
+        easterEgg.textContent = bellaText;
+        easterEgg.classList.add('show');
+        easterEgg.classList.add('fade-slow');
+        isBellaMessageShown = true;
+    }
+
     // Initialise the board
     initialise();
 

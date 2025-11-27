@@ -75,11 +75,15 @@ input[type='text']{
 
 .hidden{
     opacity: 0;
-    transition: opacity 1.5s ease;
+    transition: opacity 1s ease;
 }
 
 .show{
     opacity: 1;
+}
+
+.fade-slow{
+    transition-duration: 3s;
 }
 
 #easter-egg{
