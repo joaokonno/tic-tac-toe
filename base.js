@@ -152,6 +152,8 @@ const gameDisplay = (function(gameboard, gameLogic){
     const p = document.querySelector('#winner-message');
     p.classList.add('hidden');
 
+    let clickCount = 0;
+
     // Get references to player input
     const input1 = document.getElementById('player1');
     const input2 = document.getElementById('player2');
@@ -168,19 +170,29 @@ const gameDisplay = (function(gameboard, gameLogic){
             // Append squares to the container and attach event listeners
             container.appendChild(square);
             square.addEventListener('click', squareClick);
-            square.addEventListener('dblclick', (event) => squareClick(event, true));
         }
     }
 
     // Draws the current player's mark on the clicked square
-    function squareClick(event, doubleClick=false){
+    function squareClick(event){
         const squareId = Number(event.target.id);
-        // Act on double clicks, replacing the player's mark
-        if (doubleClick){
+        clickCount++;
+
+        // Reset clicks if takes too long
+        if (clickCount === 1){
+            clickTimer = setTimeout(() => {
+                clickCount = 0;
+            }, 300);
+        }
+
+        // Detect triple clicks for activating bug
+        if (clickCount === 3){
             gameLogic.play(event.target.id, true);
             event.target.textContent = gameLogic.getCurrentPlayer().symbol;
+        }
+            
         // Check if the move is allowed
-        } else if (gameLogic.checkAllowedMove(squareId)){
+        if (gameLogic.checkAllowedMove(squareId)){
             // Write the player's symbol on the square and play the move
             event.target.textContent = gameLogic.getCurrentPlayer().symbol;
             const {gameActive, winner} = gameLogic.play(event.target.id);
