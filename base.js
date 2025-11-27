@@ -182,13 +182,14 @@ const gameDisplay = (function(gameboard, gameLogic){
         if (clickCount === 1){
             clickTimer = setTimeout(() => {
                 clickCount = 0;
-            }, 300);
+            }, 150);
         }
 
         // Detect triple clicks for activating bug
-        if (clickCount === 3){
+        if (clickCount === 2){
             gameLogic.play(event.target.id, true);
             event.target.textContent = gameLogic.getCurrentPlayer().symbol;
+            clickCount = 0; // reset counter
         }
             
         // Check if the move is allowed
